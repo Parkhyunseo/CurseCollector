@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<!-- 타이틀 추가  -->
+<!-- 리스트를 오른쪽에 위치  -->
+<!-- 폼을 중아에 위치  -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.target').pushpin({
+          top: 0,
+          bottom: 1000,
+          offset: 0
+        });
+        $('select').material_select();
+        $('.scrollspy').scrollSpy();
+    });
+    
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+        console.log("before");
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        console.log("after");
+        $('.loading').hide();
+        }
+        });
+
+      $('.pushpin-nav').each(function() {
+	      var $this = $(this);
+	      var $target = $('#' + $(this).attr('data-target'));
+	      $this.pushpin({
+	        top: $target.offset().top,
+	        bottom: $target.offset().top + $target.outerHeight() - $this.height()
+	      });
+	    });
+</script>
+<main class="todo-list-template">
+    <div class="title">
+        쓰레기 통
+    </div>
+    <section class="palette-wrapper">
+        { palette }
+    </section>
+    <section class="form-wrapper">
+        { form }
+        <div class="form">
+            <input>
+            <div class="create-button">
+                추가
+            </div>
+        </div>
+    </section>
+    <section class="todos-wrapper">
+        { children }
+        <div>
+            {% for msg in messages %}
+            {% endfor %}
+            <div class="todo-item" >
+                <div class="remove">&times;</div>
+                    <div style={{ color }}>
+                        <div>{text}</div>
+                    </div>
+                    {
+                        checked && (<div class="check-mark">✓</div>)
+                    }
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
