@@ -29,21 +29,30 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rev
 
-posts = []
+posts = [ i for i in range(10)]
 
 @app.route("/")
 def home_page():
-    return render_template(file)
+    return render_template(file, posts=posts)
+
+@app.route("/add_message")
+def add_message():
+    #print(request.args)
     
+    post = request.args.get('message', 0, type=str)
+    return jsonify(post)
+
 @app.route("/send", methods=['POST'])
 def send_message(message):
     request.form['message']
     posts.append(post)
     posts = db.posts
     
+    get_db().execute('insert into messages (id, message)', idx, request.form.get('message', type=str))
+    
     post_id = posts.insert(post)
     online_users = mongo.db.users.find({"online": True})
-    return render_template(templates + file, online_users=online_users)
+    return render_template(templates + file, posts=posts)
     
 if __name__=="__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)))

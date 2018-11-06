@@ -5,38 +5,19 @@
 <!-- 리스트를 오른쪽에 위치  -->
 <!-- 폼을 중아에 위치  -->
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('.target').pushpin({
-          top: 0,
-          bottom: 1000,
-          offset: 0
+    $(function() {
+        $('div.create-button').bind('click', function() {
+            $.getJSON($SCRIPT_ROOT + '/add_message', {
+                message: $('input[name=msg-input]').val(),
+            }, function(data) {
+                $("#result").append("<a>" + data +"</a>");
+            });
+            return false;
         });
-        $('select').material_select();
-        $('.scrollspy').scrollSpy();
     });
-    
-    var infinite = new Waypoint.Infinite({
-      element: $('.infinite-container')[0],
-      onBeforePageLoad: function () {
-        console.log("before");
-        $('.loading').show();
-      },
-      onAfterPageLoad: function ($items) {
-        console.log("after");
-        $('.loading').hide();
-        }
-        });
-
-      $('.pushpin-nav').each(function() {
-	      var $this = $(this);
-	      var $target = $('#' + $(this).attr('data-target'));
-	      $this.pushpin({
-	        top: $target.offset().top,
-	        bottom: $target.offset().top + $target.outerHeight() - $this.height()
-	      });
-	    });
 </script>
-<main class="todo-list-template">
+<header></header>
+<main class="todo-list-template content">
     <div class="title">
         쓰레기 통
     </div>
@@ -46,27 +27,30 @@
     <section class="form-wrapper">
         { form }
         <div class="form">
-            <input>
+            <input name="msg-input">
             <div class="create-button">
                 추가
             </div>
         </div>
     </section>
-    <section class="todos-wrapper">
-        { children }
-        <div>
-            {% for msg in messages %}
-            {% endfor %}
-            <div class="todo-item" >
-                <div class="remove">&times;</div>
-                    <div style={{ color }}>
-                        <div>{text}</div>
-                    </div>
-                    {
-                        checked && (<div class="check-mark">✓</div>)
-                    }
+    <section class="todos-wrapper" style="height:100px">
+        {% for post in posts %}
+        <div class="todo-item" >
+            <div class="remove">&times;</div>
+                <div>
+                    <div>{{post}}</div>
+                </div>
+                checked && (<div class="check-mark">✓</div>)
             </div>
-        </div>
+        {% endfor %}
     </section>
 </main>
+<div class="sidebar">
+    <section id="result">
+        <div>
+            
+        </div>
+    </section>
+</div>
+<div class="clear"></div>
 {% endblock %}

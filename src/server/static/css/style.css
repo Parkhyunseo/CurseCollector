@@ -50,7 +50,6 @@
   border-top: 1px solid #f1f3f5;
 }
 
-
 .remove {
   margin-right: 1rem;
   color: #e64980;
@@ -105,4 +104,33 @@
 
 .todos-wrapper {
     min-height:  5rem;
+    height:  20rem;
+    overflow: hidden;
+}
+/* simple layout */
+.wrap {
+    width:980px;
+    margin:0 auto;
+}
+
+.content {
+    width:690px;
+    height:450px;
+    background-color:#0d7963;
+    float:left;
+}
+.sidebar {
+    width:275px;
+    height:450px;
+    background-color:#0d7963;
+    float:right;
+}
+
+.clear {
+    clear:both;
+}
+
+.footer {
+    height: 70px;
+    margin-top: 15px;
 }
