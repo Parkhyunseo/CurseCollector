@@ -7,13 +7,25 @@
 <script type="text/javascript">
     $(function() {
         $('div.create-button').bind('click', function() {
+            aciton();
+            return false;
+        });
+        
+        $('input[name=msg-input]').keyup(function(e) {
+            if (e.keyCode == 13)
+                action();        
+        });
+
+        function action(){
             $.getJSON($SCRIPT_ROOT + '/add_message', {
                 message: $('input[name=msg-input]').val(),
             }, function(data) {
-                $("#result").append("<a>" + data +"</a>");
+                $("input[name=msg-input").val('');
+                $("#result").append("<div class='todo-item'>" + data + "</div>");
+                
+                // auto scroll 추가
             });
-            return false;
-        });
+        }
     });
 </script>
 <header></header>
@@ -22,35 +34,28 @@
         쓰레기 통
     </div>
     <section class="palette-wrapper">
-        { palette }
+        간단한 소개
     </section>
     <section class="form-wrapper">
-        { form }
         <div class="form">
-            <input name="msg-input">
+            <input type="text" name="msg-input">
             <div class="create-button">
                 추가
             </div>
-        </div>
     </section>
-    <section class="todos-wrapper" style="height:100px">
-        {% for post in posts %}
-        <div class="todo-item" >
-            <div class="remove">&times;</div>
-                <div>
-                    <div>{{post}}</div>
-                </div>
-                checked && (<div class="check-mark">✓</div>)
+    <!--<section class="todos-wrapper">
+        
+    </section>-->
+</main>
+<section class="sidebar">
+    <div class="todo-list-template" id="result">
+        {% for curse in curses %}
+            <div class='todo-item'>
+                 <div class="todo-text">
+                     {{ curse }} 
+                 </div>
             </div>
         {% endfor %}
-    </section>
-</main>
-<div class="sidebar">
-    <section id="result">
-        <div>
-            
-        </div>
-    </section>
-</div>
-<div class="clear"></div>
+    </div>
+</section>
 {% endblock %}

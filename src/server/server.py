@@ -1,15 +1,39 @@
 #from flask import Flask
 import os
 import sqlite3
+import random
 from flask import * 
 from http_method_override_middleware import HTTPMethodOverrideMiddleware
 
-DATABSE = "data/database.db"
+DATABSE = "data/db_v1.db"
 
 file = 'index.html'
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
+curses = []
+
+@app.before_first_request
+def init_db():
+    if os.path.exists(os.path.join(os.getcwd(), DATABSE)):
+        g._database = sqlite3.connect(DATABSE)
+        for item in query_db('select * from curse'):
+            print(item)
+            indices = [ i for i in range(len(item[1]))]
+            filtering = []
+            for i in range(len(item[1])//2):
+                select = random.choice(indices)
+                indices.remove(select)
+                filtering.append(select)
+                
+            curse = ""
+            for i in range(len(item[1])):
+                if i not in filtering: 
+                    curse += item[1][i]
+                else:
+                    curse += '*'
+                
+            curses.append(curse)
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -27,32 +51,25 @@ def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
-    return (rv[0] if rv else None) if one else rev
-
-posts = [ i for i in range(10)]
+    return (rv[0] if rv else None) if one else rv
 
 @app.route("/")
 def home_page():
-    return render_template(file, posts=posts)
+    return render_template(file, curses=curses)
 
 @app.route("/add_message")
 def add_message():
-    #print(request.args)
+    curse = request.args.get('message', 0, type=str)
     
-    post = request.args.get('message', 0, type=str)
-    return jsonify(post)
-
-@app.route("/send", methods=['POST'])
-def send_message(message):
-    request.form['message']
-    posts.append(post)
-    posts = db.posts
-    
-    get_db().execute('insert into messages (id, message)', idx, request.form.get('message', type=str))
-    
-    post_id = posts.insert(post)
-    online_users = mongo.db.users.find({"online": True})
-    return render_template(templates + file, posts=posts)
+    with get_db() as con:
+        cur = con.cursor()
+        cur.execute('insert into curse (text, iscurse) values (?, ?)', (curse,  1))
+        con.commit()
+        
+    for item in query_db('select * from curse'):
+        print(item)
+        
+    return jsonify(curse)
     
 if __name__=="__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)))
