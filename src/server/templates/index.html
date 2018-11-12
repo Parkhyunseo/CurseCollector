@@ -1,13 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content%}
-<!-- 타이틀 추가  -->
-<!-- 리스트를 오른쪽에 위치  -->
-<!-- 폼을 중아에 위치  -->
 <script type="text/javascript">
     $(function() {
+        var modal = document.getElementById('myModal');
+        var span = document.getElementsByClassName("close")[0];
+        
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        function action(){
+            $.getJSON($SCRIPT_ROOT + '/add_message', {
+                message: $('input[name=msg-input]').val(),
+            }, function(data) {
+                console.log(data);
+                $("input[name=msg-input").val('');
+                $("#notification").text(data.reason);
+                modal.style.display = "block";
+                // auto scroll 추가
+            });
+        }
+        
         $('div.create-button').bind('click', function() {
-            aciton();
+            action();
             return false;
         });
         
@@ -15,47 +37,35 @@
             if (e.keyCode == 13)
                 action();        
         });
-
-        function action(){
-            $.getJSON($SCRIPT_ROOT + '/add_message', {
-                message: $('input[name=msg-input]').val(),
-            }, function(data) {
-                $("input[name=msg-input").val('');
-                $("#result").append("<div class='todo-item'>" + data + "</div>");
-                
-                // auto scroll 추가
-            });
-        }
     });
 </script>
-<header></header>
-<main class="todo-list-template content">
-    <div class="title">
-        쓰레기 통
+<main>
+    <div class="help-tip">
+        <p>
+            욕설을 문장으로 작성해주세요.
+            필터링 되지 않는 욕설을 작성한 당신, 진정한 키보드 워리업니다!
+        </p>
     </div>
-    <section class="palette-wrapper">
-        간단한 소개
-    </section>
-    <section class="form-wrapper">
-        <div class="form">
-            <input type="text" name="msg-input">
-            <div class="create-button">
-                추가
+    <div class="input-template">
+        <div class="title">
+            <img src="{{ url_for('static', filename='img/logo2.jpg') }}" style="display:block;margin:auto;"/>
+        </div>
+        <div class="form-wrapper">
+            <div class="form">
+                <input type="text" name="msg-input">
+                <div class="create-button"> 추가 </div>
             </div>
-    </section>
-    <!--<section class="todos-wrapper">
-        
-    </section>-->
+        </div>
+    </div>
+    <div class="fire"></div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="notification"></p>
+      </div>
+</div>
 </main>
-<section class="sidebar">
-    <div class="todo-list-template" id="result">
-        {% for curse in curses %}
-            <div class='todo-item'>
-                 <div class="todo-text">
-                     {{ curse }} 
-                 </div>
-            </div>
-        {% endfor %}
-    </div>
-</section>
 {% endblock %}

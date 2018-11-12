@@ -6,11 +6,13 @@ from flask import *
 from http_method_override_middleware import HTTPMethodOverrideMiddleware
 
 DATABSE = "data/db_v1.db"
+filter_file = "curses.txt"
 
 file = 'index.html'
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
+filters = []
 curses = []
 
 @app.before_first_request
@@ -34,6 +36,11 @@ def init_db():
                     curse += '*'
                 
             curses.append(curse)
+            
+def load_filter():
+    with open(filter_file) as f:
+        content = f.read()
+        filters = content.split(',')
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -55,11 +62,18 @@ def query_db(query, args=(), one=False):
 
 @app.route("/")
 def home_page():
-    return render_template(file, curses=curses)
+    return render_template(file, curses=range(100))
 
 @app.route("/add_message")
 def add_message():
     curse = request.args.get('message', 0, type=str)
+    
+    for word in filters:
+        if curse in word:
+            return jsonify({
+                'success':0,
+                'reason':"필터링에 걸렸습니다.",
+            })
     
     with get_db() as con:
         cur = con.cursor()
@@ -69,7 +83,10 @@ def add_message():
     for item in query_db('select * from curse'):
         print(item)
         
-    return jsonify(curse)
+    return jsonify({
+        'success':1,
+        'reason':"축하해요! 대단한 욕쟁이시네요!",
+    })
     
 if __name__=="__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)))

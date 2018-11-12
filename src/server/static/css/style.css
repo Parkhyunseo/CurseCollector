@@ -1,13 +1,50 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: black;
+}
+
+header {
+  display: block;
+  background-color:black;
+}
+
+main {
+  margin-top:300px;
+  width:100%;
+  height:450px;
+  float:left;
+  background-color:black;
+}
+
+aside {
+  width:30%;
+  height:450px;
+  padding-right:20px;
+  float:right;
+}
+
 .form {
   display: flex;
 }
 
 .form input {
-  flex: 1; /* 버튼을 뺀 빈 공간을 모두 채워줍니다 */
+  flex: 1;
   font-size: 1.25rem;
   outline: none;
   border: none;
   border-bottom: 1px solid #c5f6fa;
+}
+
+input{
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  font-size: 13px;
+  color:white;
+  padding-left:1rem;
+  background-color:gray;
 }
 
 .create-button {
@@ -16,7 +53,7 @@
   padding-left: 1rem;
   padding-right: 1rem;
   margin-left: 1rem;
-  background: #22b8cf;
+  background: #FE2E2E;
   border-radius: 3px;
   color: white;
   font-weight: 600;
@@ -27,97 +64,147 @@
   background: #3bc9db;
 }
 
-.todo-item {
-  padding: 1rem;
-  display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
-  cursor: pointer;
-  transition: all 0.15s;
-  user-select: none;
-  background-color: white;
-}
-
-.todo-item:hover {
-  background: #e3fafc;
-}
-
-/* todo-item 에 마우스가 있을때만 .remove 보이기 */
-.todo-item:hover .remove {
-  opacity: 1;
-}
-
-/* todo-item 사이에 윗 테두리 */
-.todo-item + .todo-item {
-  border-top: 1px solid #f1f3f5;
-}
-
-.todo-text {
-  flex: 1; /* 체크, 엑스를 제외한 공간 다 채우기 */
-  word-break: break-all;
-}
-
-.todo-list-template {
+.input-template {
+    width: 500px;
     background: white;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); /* 그림자 */
-    margin: 0 auto; /* 페이지 중앙 정렬 */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    margin-left:auto;
+    margin-right:auto;
     margin-top: 4rem;
 }
 
 .title {
-    padding: 2rem;
-    font-size: 2.5rem;
-    text-align: center;
-    font-weight: 100;
-    background: #22b8cf;
+    margin-left: auto;
+    margin-right: auto;
+    background: #BDBDBD;
     color: white;
 }
 
 .form-wrapper {
     padding: 1rem;
-    border-bottom: 1px solid #22b8cf;
+    background-color:black;
 }
 
-.palette-wrapper {
-  padding: 1rem;
-  background: #f1f3f5;
+
+/* help */
+.help-tip{
+	position: absolute;
+	top: 18px;
+	right: 18px;
+	text-align: center;
+	background-color: #BCDBEA;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 26px;
+	cursor: default;
 }
 
-.todos-wrapper {
-    min-height:  5rem;
+.help-tip:before{
+	content:'?';
+	font-weight: bold;
+	color:#fff;
 }
 
-/* simple layout */
-.wrap {
-    /*width:1202px;
-    margin:0 auto;
-    */
+.help-tip:hover p{
+	display:block;
+	transform-origin: 100% 0%;
+	-webkit-animation: fadeIn 0.3s ease-in-out;
+	animation: fadeIn 0.3s ease-in-out;
 }
 
-.logo {
-  height: 200px;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-top: 50px;
-  margin-bottom : 50px;
+.help-tip p{
+	display: none;
+	text-align: left;
+	background-color: #1E2021;
+	padding: 20px;
+	width: 300px;
+	position: absolute;
+	border-radius: 3px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	right: -4px;
+	color: #FFF;
+	font-size: 13px;
+	line-height: 1.4;
 }
 
-.content {
-    width: 30%;
-    height:450px;
-    background-color:#0d7963;
-    padding:20px;
-    float:left;
+.help-tip p:before{
+	position: absolute;
+	content: '';
+	width:0;
+	height: 0;
+	border:6px solid transparent;
+	border-bottom-color:#1E2021;
+	right:10px;
+	top:-12px;
 }
 
-section {
-    width:70%;
-    height:450px;
-    float:right;
-    padding:20px;
+.help-tip p:after{
+	width:100%;
+	height:40px;
+	content:'';
+	position: absolute;
+	top:-40px;
+	left:0;
+}
+
+
+@-webkit-keyframes fadeIn {
+	0% { 
+		opacity:0; 
+		transform: scale(0.6);
+	}
+	100% {
+		opacity:100%;
+		transform: scale(1);
+	}
+}
+
+@keyframes fadeIn {
+	0% { opacity:0; }
+	100% { opacity:100%; }
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 @media (max-width: 600px) {
-    section, .content {
+    .result, .content {
         width: 100%;
         height: auto;
     }

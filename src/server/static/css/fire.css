@@ -1,0 +1,19 @@
+body{
+  overflow:hidden;
+  background-color:#000;
+}
+.fire{
+  position:absolute;
+  margin:0;
+  padding:0;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  z-index:-1;
+  background-image:url(http://78.media.tumblr.com/9951ca2e7e884a48ca5b5269f5514cd6/tumblr_nwjrkxWOcd1tslewgo1_500.gif);
+  background-repeat:no-repeat;
+  background-size:100%;
+  background-position:left bottom;
+  filter:blur(2px);
+}

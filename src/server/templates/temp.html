@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<script type="text/javascript">
+    $(function() {
+        $('div.create-button').bind('click', function() {
+            aciton();
+            return false;
+        });
+        
+        $('input[name=msg-input]').keyup(function(e) {
+            if (e.keyCode == 13)
+                action();        
+        });
+
+        function action(){
+            $.getJSON($SCRIPT_ROOT + '/add_message', {
+                message: $('input[name=msg-input]').val(),
+            }, function(data) {
+                $("input[name=msg-input").val('');
+                $("#result").append("<div class='todo-item'>" + data + "</div>");
+                
+                // auto scroll 추가
+            });
+        }
+    });
+</script>
+<header  class="logo">
+    <img src="{{ url_for('static', filename='img/logo2.jpg') }}" style="display:block;margin:auto;"/>
+</header>
+<main>
+    <div class="input-template">
+        <div class="title"> 키보드 원리어 </div>
+        <div class="explain-wrapper"> 당신의 실력을 보여주세요 </div>
+        <div class="form-wrapper">
+            <div class="form">
+                <input type="text" name="msg-input">
+                <div class="create-button"> 추가 </div>
+            </div>
+        </div>
+    </div>
+</main>    
+<aside>
+    <div class="todo-list-template" id="result">
+        {% for curse in curses %}
+            <div class='todo-item'>
+                <div class="todo-text">
+                    {{ curse }} 
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</aside>    
+{% endblock %}
