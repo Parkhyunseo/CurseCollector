@@ -11,7 +11,7 @@ header {
 }
 
 main {
-  margin-top:300px;
+  margin-top:100px;
   width:100%;
   height:450px;
   float:left;
@@ -76,8 +76,7 @@ input{
 .title {
     margin-left: auto;
     margin-right: auto;
-    background: #BDBDBD;
-    color: white;
+    background: black;
 }
 
 .form-wrapper {

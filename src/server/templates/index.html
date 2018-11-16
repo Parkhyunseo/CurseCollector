@@ -22,6 +22,20 @@
             }, function(data) {
                 console.log(data);
                 $("input[name=msg-input").val('');
+                var result = '';
+                
+                if(data.success == 1)
+                {
+                    result = "성공";
+                    $("#result").css('color', 'green');
+                }
+                else
+                {
+                    result = "실패"
+                    $("#result").css('color', 'red');
+                }
+                
+                $("#result").text(result);
                 $("#notification").text(data.reason);
                 modal.style.display = "block";
                 // auto scroll 추가
@@ -35,25 +49,30 @@
         
         $('input[name=msg-input]').keyup(function(e) {
             if (e.keyCode == 13)
-                action();        
+                if(modal.style.display == "block")
+                    modal.style.display = "none";
+                else
+                    action();        
         });
     });
 </script>
 <main>
     <div class="help-tip">
         <p>
-            욕설을 문장으로 작성해주세요.
-            필터링 되지 않는 욕설을 작성한 당신, 진정한 키보드 워리업니다!
+            욕설을 문장으로 작성해주세요.<br>
+            필터링 되지 않는 욕설을 작성하여,<br>
+            진정한 키보드 워리어가 되세요!<br>
+            예시) ㅈ1랄 하지 마세요.
         </p>
     </div>
     <div class="input-template">
         <div class="title">
-            <img src="{{ url_for('static', filename='img/logo2.jpg') }}" style="display:block;margin:auto;"/>
+            <img src="{{ url_for('static', filename='img/logo.png') }}" style="display:block;margin:auto;"/>
         </div>
         <div class="form-wrapper">
             <div class="form">
                 <input type="text" name="msg-input">
-                <div class="create-button"> 추가 </div>
+                <div class="create-button"> 확인 </div>
             </div>
         </div>
     </div>
@@ -64,6 +83,7 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">&times;</span>
+        <p id="result"></p>
         <p id="notification"></p>
       </div>
 </div>
