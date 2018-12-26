@@ -1,7 +1,7 @@
 # 욕설 수집 사이트 The Keyboard Warrior
 Data Collector For Curse Filter.
 
-## 요구사항
+## lib & db
 flask
 sqlite3
 
